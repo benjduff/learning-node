@@ -1,9 +1,5 @@
-var time = 0;
+var stuff = require('./stuff');
 
-var timer = setInterval(function(){
-  time += 2;
-  console.log(time + ' seconds have passed.');
-  if (time > 5) {
-    clearInterval(timer);
-  }
-}, 2000);
+console.log(stuff.counter(['apple', 'banana', 'orange']));
+console.log(stuff.addition(12, 8));
+console.log(stuff.addition(stuff.pi, 6));
