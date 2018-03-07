@@ -1,5 +1,5 @@
-var events = require('events');
-var util = require('util');
+var events = require('events'); //node module
+var util = require('util'); //node module
 
 var Person = function(name){ //Create Person object and set name
   this.name = name;
