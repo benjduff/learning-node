@@ -1,7 +1,10 @@
 var events = require('events'); //node module
 var util = require('util'); //node module
 var fs = require('fs');
+var http = require('http');
 
+
+// --- CUSTOM EVENT LISTENERS --- //
 
 /*
 var Person = function(name){ //Create Person object and set name
@@ -27,6 +30,9 @@ Steve.emit('speak', 'Testing custom events!');
 */
 
 
+
+// --- DIRECTORIES --- //
+
 //creating and deleting directories using Sync and Async methods from the fs module
 
 //fs.mkdirSync('newDir');  //Synchronous method for creating a new directory
@@ -43,8 +49,20 @@ fs.mkdir('newDir', function(){
 });
 */
 
-
+/*
 //To remove a directory. A directory must first be empty.
 fs.unlink('./newDir/writeMe.txt', function(){ //unlink removes a particular file in a dir, once that is done execute callback func which deletes the dir.
   fs.rmdirSync('newDir');
+})
+*/
+
+
+
+// --- READABLE STREAMS  --- //
+// Different to "fs.readFile" which reads the whole file to memory before it executes a callback function, a read stream sends the data in buffers so you can execute a callback function as the buffers (chunks of data) are arriving over the stream.
+var myReadStream = fs.createReadStream(__dirname + '/example.txt'); //Created a readable stream and specified which file to read in the params. To get the data from the stream in english, 'utf8' needs to be added as a 2nd parameter
+
+myReadStream.on('data', function(chunk){ //data event listener is inheritted from createReadStream which uses EventEmitter to create the 'data' event listener. When a buffer (a chunk of data) is received, execute callback func and log the chunk contents
+  console.log('new chunk received:');
+  console.log(chunk);
 })
