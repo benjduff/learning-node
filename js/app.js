@@ -31,6 +31,8 @@ Steve.emit('speak', 'Testing custom events!');
 
 
 
+
+
 // --- DIRECTORIES --- //
 
 //creating and deleting directories using Sync and Async methods from the fs module
@@ -58,11 +60,45 @@ fs.unlink('./newDir/writeMe.txt', function(){ //unlink removes a particular file
 
 
 
+
+
+/*
 // --- READABLE STREAMS  --- //
 // Different to "fs.readFile" which reads the whole file to memory before it executes a callback function, a read stream sends the data in buffers so you can execute a callback function as the buffers (chunks of data) are arriving over the stream.
 var myReadStream = fs.createReadStream(__dirname + '/example.txt'); //Created a readable stream and specified which file to read in the params. To get the data from the stream in english, 'utf8' needs to be added as a 2nd parameter
-
+/*
 myReadStream.on('data', function(chunk){ //data event listener is inheritted from createReadStream which uses EventEmitter to create the 'data' event listener. When a buffer (a chunk of data) is received, execute callback func and log the chunk contents
   console.log('new chunk received:');
   console.log(chunk);
 })
+*/
+
+/*
+// --- WRITEABLE STREAMS --- //
+var myWriteStream = fs.createWriteStream(__dirname + '/writeExample.txt')
+/*
+myReadStream.on('data', function(chunk){
+  console.log('new chunk received.');
+  myWriteStream.write(chunk);
+})
+*/
+
+/*
+// --- PIPES --- //
+//Pipes are a node feature for getting data from a readstream and sending it to a writeStream, leaving out the manual work.
+myReadStream.pipe(myWriteStream);
+*/
+
+
+
+
+// --- CREATING A SERVER -- //
+var server = http.createServer(function(req, res){ //Create a server using method from http module. Take request and response as perams
+  console.log('A request was made: ' + req.url); //log the request url, eg:127.0.0.1/api
+  res.writeHead(200, {'Content-Type': 'text/plain'}); //respond with status code 200 (OK) and response header as plain text
+  var myReadStream = fs.createReadStream(__dirname + '/example.txt', 'utf8');  //create a ReadStream(read location, character code)
+  myReadStream.pipe(res); //pipe ReadStream to client
+})
+
+server.listen(3000, '192.168.0.11');
+console.log('Listening to port 3000');
