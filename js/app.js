@@ -91,13 +91,58 @@ myReadStream.pipe(myWriteStream);
 
 
 
-
-// --- CREATING A SERVER -- //
+/*
+// --- STREAMING HTML PAGE FROM SERVER TO CLIENT -- //
 var server = http.createServer(function(req, res){ //Create a server using method from http module. Take request and response as perams
   console.log('A request was made: ' + req.url); //log the request url, eg:127.0.0.1/api
-  res.writeHead(200, {'Content-Type': 'text/plain'}); //respond with status code 200 (OK) and response header as plain text
-  var myReadStream = fs.createReadStream(__dirname + '/example.txt', 'utf8');  //create a ReadStream(read location, character code)
+  res.writeHead(200, {'Content-Type': 'text/html'}); //respond with status code 200 (OK) and response header as plain text
+  var myReadStream = fs.createReadStream('index.html', 'utf8');  //create a ReadStream(read location, character code)
   myReadStream.pipe(res); //pipe ReadStream to client
+})
+
+server.listen(3000, '192.168.0.11');
+console.log('Listening to port 3000');
+*/
+
+
+
+/*
+// --- SERVING JSON DATA --- //
+var server = http.createServer(function(req, res){ //create server
+  console.log('A request was made from: ' + req.url); //log request url
+  res.writeHead(200, {'Content-Type': 'application/json'}); //status code = 200, content type is json
+  var myObj = { //create Object
+    name: 'Brian',
+    job: 'Developer',
+    age: 44
+  };
+  res.end(JSON.stringify(myObj)); //Serialise object to JSON string
+})
+
+server.listen(3000, '192.168.0.11');
+console.log('Listening to port 3000');
+*/
+
+
+
+
+// --- BASIC ROUTING --- //
+var server = http.createServer(function(req, res){ //create server
+  console.log('A request was made from: ' + req.url); //log request url
+  if (req.url === '/' || req.url === '/home') { //check request url and serve relevant html page via stream
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    fs.createReadStream('index.html').pipe(res);
+  } else if (req.url === '/contact') {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    fs.createReadStream('contact.html').pipe(res);
+  } else if (req.url === '/api/people') { // Serve pre-set object array data as JSON is url === /api/people. Normally would serve data from DB here
+    var people = [{name: 'Steve', age: 23}, {name:'John', age: 34}];
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify(people));
+  } else { //If page isn't found serve 404.html
+    res.writeHead(404, {'Content-Type': 'text/html'});
+    fs.createReadStream('404.html').pipe(res);
+  }
 })
 
 server.listen(3000, '192.168.0.11');
