@@ -1,0 +1,22 @@
+{
+  "name": "weatherapp",
+  "version": "1.0.0",
+  "description": "This is an example of a README file.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benjduff/learning-node.git"
+  },
+  "author": "benjduff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benjduff/learning-node/issues"
+  },
+  "homepage": "https://github.com/benjduff/learning-node#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
