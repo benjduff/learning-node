@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/benjduff/learning-node#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "npm": "^5.7.1"
   }
 }
